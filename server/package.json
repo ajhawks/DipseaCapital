@@ -1,0 +1,45 @@
+{
+  "name": "@silexx/server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@silexx/shared": "*",
+    "dotenv": "^16.4.0",
+    "express": "^4.19.0",
+    "express-rate-limit": "^7.3.0",
+    "jsonwebtoken": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.0",
+    "@types/jest": "^29.5.0",
+    "@types/jsonwebtoken": "^9.0.0",
+    "@types/node": "^20.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.0",
+    "tsx": "^4.15.0",
+    "typescript": "~5.5.0"
+  },
+  "jest": {
+    "preset": "ts-jest/presets/default-esm",
+    "extensionsToTreatAsEsm": [".ts"],
+    "moduleNameMapper": {
+      "^@silexx/shared$": "<rootDir>/../shared/index.ts",
+      "^@silexx/shared/(.*)$": "<rootDir>/../shared/$1",
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
+    "transform": {
+      "^.+\\.ts$": ["ts-jest", { "useESM": true, "tsconfig": "tsconfig.test.json" }]
+    },
+    "testEnvironment": "node",
+    "roots": ["<rootDir>/tests"]
+  }
+}
