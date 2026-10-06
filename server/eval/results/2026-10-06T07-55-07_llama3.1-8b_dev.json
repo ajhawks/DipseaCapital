@@ -1,0 +1,4347 @@
+{
+  "runAt": "2026-10-06T07:55:07.880Z",
+  "model": "llama3.1:8b",
+  "baseUrl": "http://localhost:11434/v1",
+  "split": "dev",
+  "category": null,
+  "gitSha": "371fc11",
+  "dirty": true,
+  "nlpSourceHash": "df3682169930",
+  "metrics": {
+    "n": 210,
+    "caseAccuracy": 0.7619,
+    "fieldAccuracy": {
+      "side": 0.9906,
+      "quantity": 1,
+      "symbol": 0.9811,
+      "orderType": 0.9906,
+      "price": 0.9906
+    },
+    "falseRejectRate": 0.269,
+    "hallucinationRate": 0,
+    "ambiguityRecall": 0.6154,
+    "latencyMs": {
+      "p50": 2179,
+      "p95": 2671,
+      "p99": 3039,
+      "max": 3331
+    },
+    "byCategory": {
+      "ambiguous": {
+        "n": 13,
+        "passed": 8,
+        "accuracy": 0.6154
+      },
+      "canonical": {
+        "n": 20,
+        "passed": 19,
+        "accuracy": 0.95
+      },
+      "company_name": {
+        "n": 25,
+        "passed": 19,
+        "accuracy": 0.76
+      },
+      "correction": {
+        "n": 13,
+        "passed": 7,
+        "accuracy": 0.5385
+      },
+      "filler": {
+        "n": 11,
+        "passed": 8,
+        "accuracy": 0.7273
+      },
+      "missing_price": {
+        "n": 8,
+        "passed": 8,
+        "accuracy": 1
+      },
+      "missing_quantity": {
+        "n": 12,
+        "passed": 12,
+        "accuracy": 1
+      },
+      "missing_side": {
+        "n": 11,
+        "passed": 11,
+        "accuracy": 1
+      },
+      "non_order": {
+        "n": 11,
+        "passed": 11,
+        "accuracy": 1
+      },
+      "phrasing": {
+        "n": 31,
+        "passed": 20,
+        "accuracy": 0.6452
+      },
+      "spoken_numbers": {
+        "n": 28,
+        "passed": 19,
+        "accuracy": 0.6786
+      },
+      "stop": {
+        "n": 17,
+        "passed": 10,
+        "accuracy": 0.5882
+      },
+      "unknown_symbol": {
+        "n": 10,
+        "passed": 8,
+        "accuracy": 0.8
+      }
+    }
+  },
+  "results": [
+    {
+      "id": "gen-can-001",
+      "category": "canonical",
+      "transcript": "Sell 5 shares of DIS at market price",
+      "ms": 1971,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 5,
+          "rawSymbol": "DIS",
+          "resolvedSymbol": "DIS",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-can-002",
+      "category": "canonical",
+      "transcript": "Sell 5000 shares of AMZN at 293",
+      "ms": 2009,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 5000,
+          "rawSymbol": "AMZN",
+          "resolvedSymbol": "AMZN",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 293
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-can-003",
+      "category": "canonical",
+      "transcript": "Sell 2000 shares of NVDA at 569.05",
+      "ms": 2118,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 2000,
+          "rawSymbol": "NVDA",
+          "resolvedSymbol": "NVDA",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 1,
+          "limitPrice": 569.05
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-can-004",
+      "category": "canonical",
+      "transcript": "Buy 10 shares of INTC at 364.99",
+      "ms": 2090,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 10,
+          "rawSymbol": "INTC",
+          "resolvedSymbol": "INTC",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 1,
+          "limitPrice": 364.99
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-can-007",
+      "category": "canonical",
+      "transcript": "Buy 40 shares of META at market price",
+      "ms": 1974,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 40,
+          "rawSymbol": "META",
+          "resolvedSymbol": "META",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-can-009",
+      "category": "canonical",
+      "transcript": "Buy 750 shares of BA at market",
+      "ms": 2108,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 750,
+          "rawSymbol": "BA",
+          "resolvedSymbol": "BA",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-can-010",
+      "category": "canonical",
+      "transcript": "Buy 25 shares of BAC limit 114.25",
+      "ms": 2188,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 25,
+          "rawSymbol": "BAC",
+          "resolvedSymbol": "BAC",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 1,
+          "limitPrice": 114.25
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-can-011",
+      "category": "canonical",
+      "transcript": "Buy 75 shares of GOOGL limit 450.50",
+      "ms": 2142,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 75,
+          "rawSymbol": "GOOGL",
+          "resolvedSymbol": "GOOGL",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 1,
+          "limitPrice": 450.5
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-can-012",
+      "category": "canonical",
+      "transcript": "Sell 400 shares of MSFT limit 246",
+      "ms": 2011,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 400,
+          "rawSymbol": "MSFT",
+          "resolvedSymbol": "MSFT",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 246
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-can-013",
+      "category": "canonical",
+      "transcript": "Buy 2000 shares of META limit 220.99",
+      "ms": 2181,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 2000,
+          "rawSymbol": "META",
+          "resolvedSymbol": "META",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 1,
+          "limitPrice": 220.99
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-can-014",
+      "category": "canonical",
+      "transcript": "Buy 300 shares of NVDA with a limit of 473.25",
+      "ms": 2119,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 300,
+          "rawSymbol": "NVDA",
+          "resolvedSymbol": "NVDA",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 1,
+          "limitPrice": 473.25
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-can-015",
+      "category": "canonical",
+      "transcript": "Buy 100 shares of META at the market",
+      "ms": 2034,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 100,
+          "rawSymbol": "META",
+          "resolvedSymbol": "META",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-can-016",
+      "category": "canonical",
+      "transcript": "Buy 2500 shares of JPM with a limit of 118.75",
+      "ms": 2132,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 2500,
+          "rawSymbol": "JPM",
+          "resolvedSymbol": "JPM",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 1,
+          "limitPrice": 118.75
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-can-017",
+      "category": "canonical",
+      "transcript": "Buy 75 shares of DAL at market",
+      "ms": 2023,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 75,
+          "rawSymbol": "DAL",
+          "resolvedSymbol": "DAL",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-can-018",
+      "category": "canonical",
+      "transcript": "Sell 400 shares of AMD at 154.25",
+      "ms": 2030,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 400,
+          "rawSymbol": "AMD",
+          "resolvedSymbol": "AMD",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 1,
+          "limitPrice": 154.25
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-can-019",
+      "category": "canonical",
+      "transcript": "Buy 150 shares of NFLX limit 108.50",
+      "ms": 2072,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 150,
+          "rawSymbol": "NFLX",
+          "resolvedSymbol": "NFLX",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 1,
+          "limitPrice": 108.5
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-can-020",
+      "category": "canonical",
+      "transcript": "Buy 150 shares of KO limit 440.50",
+      "ms": 2012,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 150,
+          "rawSymbol": "KO",
+          "resolvedSymbol": "KO",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 1,
+          "limitPrice": 440.5
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-co-003",
+      "category": "company_name",
+      "transcript": "get me 150 Coca Cola shares with a limit of 267.50",
+      "ms": 2223,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-co-004",
+      "category": "company_name",
+      "transcript": "unload 5000 shares of Amazon at 493",
+      "ms": 2156,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 5000,
+          "rawSymbol": "Amazon",
+          "resolvedSymbol": "AMZN",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 493
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-co-005",
+      "category": "company_name",
+      "transcript": "unload 150 shares of AMD at market price",
+      "ms": 2148,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 150,
+          "rawSymbol": "AMD",
+          "resolvedSymbol": "AMD",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-co-007",
+      "category": "company_name",
+      "transcript": "sell 300 Alphabet shares at 276.99",
+      "ms": 2334,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 300,
+          "rawSymbol": "Alphabet",
+          "resolvedSymbol": "GOOGL",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 276.99
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-co-008",
+      "category": "company_name",
+      "transcript": "sell 1500 American Airlines shares limit 421",
+      "ms": 1968,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 1500,
+          "rawSymbol": "American Airlines",
+          "resolvedSymbol": "AAL",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 1,
+          "limitPrice": 421
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-co-009",
+      "category": "company_name",
+      "transcript": "get rid of 50 Coke limit 250.99",
+      "ms": 2086,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-co-010",
+      "category": "company_name",
+      "transcript": "pick up 1 Coca Cola with a limit of 334.10",
+      "ms": 2178,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 1,
+          "rawSymbol": "Coca Cola",
+          "resolvedSymbol": "KO",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 334.1
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-co-014",
+      "category": "company_name",
+      "transcript": "get rid of 100 shares of Advanced Micro Devices at 499",
+      "ms": 2134,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-co-015",
+      "category": "company_name",
+      "transcript": "dump 50 shares of Delta at market price",
+      "ms": 2031,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 50,
+          "rawSymbol": "Delta",
+          "resolvedSymbol": "DAL",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-co-016",
+      "category": "company_name",
+      "transcript": "unload 5000 AMD shares limit 157",
+      "ms": 1914,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 5000,
+          "rawSymbol": "AMD",
+          "resolvedSymbol": "AMD",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 1,
+          "limitPrice": 157
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-co-017",
+      "category": "company_name",
+      "transcript": "dump 25 Walmart with a limit of 104.75",
+      "ms": 2075,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 25,
+          "rawSymbol": "Walmart",
+          "resolvedSymbol": "WMT",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 1,
+          "limitPrice": 104.75
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-co-018",
+      "category": "company_name",
+      "transcript": "get rid of 25 Delta at the market",
+      "ms": 1972,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side, quantity."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side, quantity.)"
+    },
+    {
+      "id": "gen-co-020",
+      "category": "company_name",
+      "transcript": "sell 150 Meta at market price",
+      "ms": 1986,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 150,
+          "rawSymbol": "Meta",
+          "resolvedSymbol": "META",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-co-021",
+      "category": "company_name",
+      "transcript": "dump 2000 shares of Nvidia at market",
+      "ms": 2131,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 2000,
+          "rawSymbol": "Nvidia",
+          "resolvedSymbol": "NVDA",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-co-022",
+      "category": "company_name",
+      "transcript": "purchase 5 Amazon with a limit of 249",
+      "ms": 1976,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 5,
+          "rawSymbol": "Amazon",
+          "resolvedSymbol": "AMZN",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 249
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-co-023",
+      "category": "company_name",
+      "transcript": "buy 12 shares of Disney limit 285.25",
+      "ms": 2056,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 12,
+          "rawSymbol": "Disney",
+          "resolvedSymbol": "DIS",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 285.25
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-co-024",
+      "category": "company_name",
+      "transcript": "grab 1000 JPMorgan at 255.25",
+      "ms": 2222,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 1000,
+          "rawSymbol": "JPMorgan",
+          "resolvedSymbol": "JPM",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 255.25
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-co-025",
+      "category": "company_name",
+      "transcript": "add 500 Nvidia limit 420.75",
+      "ms": 2144,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-co-027",
+      "category": "company_name",
+      "transcript": "grab 500 shares of Intel at 123.05",
+      "ms": 2048,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 500,
+          "rawSymbol": "Intel",
+          "resolvedSymbol": "INTC",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 123.05
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-co-029",
+      "category": "company_name",
+      "transcript": "get rid of 200 Netflix with a limit of 555.75",
+      "ms": 2032,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-co-030",
+      "category": "company_name",
+      "transcript": "pick up 200 UnitedHealth shares at 358.05",
+      "ms": 2087,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 200,
+          "rawSymbol": "UnitedHealth",
+          "resolvedSymbol": "UNH",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 358.05
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-num-001",
+      "category": "spoken_numbers",
+      "transcript": "buy three hundred shares of Alphabet with a limit of four hundred thirty seven dollars",
+      "ms": 1987,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 300,
+          "rawSymbol": "Alphabet",
+          "resolvedSymbol": "GOOGL",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 437
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-num-002",
+      "category": "spoken_numbers",
+      "transcript": "get me one hundred fifty shares of Walmart with a limit of 262.99",
+      "ms": 2157,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-num-006",
+      "category": "spoken_numbers",
+      "transcript": "get rid of four hundred shares of JPMorgan limit 245.25",
+      "ms": 2157,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-num-008",
+      "category": "spoken_numbers",
+      "transcript": "get me forty shares of Delta Airlines at three hundred thirty eight dollars",
+      "ms": 2141,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-num-009",
+      "category": "spoken_numbers",
+      "transcript": "add seven hundred fifty shares of JP Morgan at 233.25",
+      "ms": 2137,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-num-010",
+      "category": "spoken_numbers",
+      "transcript": "sell five hundred shares of Facebook at the market",
+      "ms": 2051,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 500,
+          "rawSymbol": "Facebook",
+          "resolvedSymbol": "META",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-num-011",
+      "category": "spoken_numbers",
+      "transcript": "unload one thousand five hundred shares of Microsoft limit four hundred seventeen dollars",
+      "ms": 2058,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-num-012",
+      "category": "spoken_numbers",
+      "transcript": "sell one hundred fifty shares of Boeing at 142.75",
+      "ms": 2138,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 150,
+          "rawSymbol": "Boeing",
+          "resolvedSymbol": "BA",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 142.75
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-num-014",
+      "category": "spoken_numbers",
+      "transcript": "unload fifteen hundred shares of UnitedHealth with a limit of twenty five dollars and ten cents",
+      "ms": 2179,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-num-015",
+      "category": "spoken_numbers",
+      "transcript": "dump seven hundred fifty shares of Delta at the market",
+      "ms": 2023,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 750,
+          "rawSymbol": "Delta",
+          "resolvedSymbol": "DAL",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-num-016",
+      "category": "spoken_numbers",
+      "transcript": "dump twenty five shares of Coke at three hundred sixty three dollars and twenty five cents",
+      "ms": 2119,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 25,
+          "rawSymbol": "Coke",
+          "resolvedSymbol": "KO",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 363.25
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-num-017",
+      "category": "spoken_numbers",
+      "transcript": "dump ten shares of Advanced Micro Devices at market",
+      "ms": 2099,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 10,
+          "rawSymbol": "Advanced Micro Devices",
+          "resolvedSymbol": "AMD",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-num-018",
+      "category": "spoken_numbers",
+      "transcript": "dump four hundred shares of Microsoft at market price",
+      "ms": 1986,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 400,
+          "rawSymbol": "Microsoft",
+          "resolvedSymbol": "MSFT",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-num-019",
+      "category": "spoken_numbers",
+      "transcript": "sell two thousand shares of Amazon at market price",
+      "ms": 2071,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 2000,
+          "rawSymbol": "Amazon",
+          "resolvedSymbol": "AMZN",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-num-022",
+      "category": "spoken_numbers",
+      "transcript": "unload fifty shares of Microsoft at market price",
+      "ms": 2010,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 50,
+          "rawSymbol": "Microsoft",
+          "resolvedSymbol": "MSFT",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-num-023",
+      "category": "spoken_numbers",
+      "transcript": "grab ten shares of Tesla with a limit of 151.25",
+      "ms": 2079,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 10,
+          "rawSymbol": "Tesla",
+          "resolvedSymbol": "TSLA",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 1,
+          "limitPrice": 151.25
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-num-024",
+      "category": "spoken_numbers",
+      "transcript": "add five shares of Coke at one hundred fifty nine dollars and fifty cents",
+      "ms": 2221,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-num-025",
+      "category": "spoken_numbers",
+      "transcript": "grab fifty shares of Coca Cola with a limit of 603.25",
+      "ms": 2227,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 50,
+          "rawSymbol": "Coca Cola",
+          "resolvedSymbol": "KO",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 603.25
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-num-026",
+      "category": "spoken_numbers",
+      "transcript": "add fifty shares of Disney limit 461.05",
+      "ms": 2069,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-num-029",
+      "category": "spoken_numbers",
+      "transcript": "grab two hundred fifty shares of Tesla with a limit of one hundred eighty two dollars and ten cents",
+      "ms": 2051,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 250,
+          "rawSymbol": "Tesla",
+          "resolvedSymbol": "TSLA",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 182.1
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-num-030",
+      "category": "spoken_numbers",
+      "transcript": "get rid of one thousand five hundred shares of Alphabet at market",
+      "ms": 2098,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-phr-001",
+      "category": "phrasing",
+      "transcript": "with a limit of 229, get me 12 shares of Delta",
+      "ms": 2021,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-phr-003",
+      "category": "phrasing",
+      "transcript": "go ahead and get me 1000 shares of Apple at 566.05",
+      "ms": 2118,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-phr-004",
+      "category": "phrasing",
+      "transcript": "limit 415, dump 10 shares of Alphabet",
+      "ms": 2058,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 10,
+          "rawSymbol": "Alphabet",
+          "resolvedSymbol": "GOOGL",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": false,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": false,
+        "price": false
+      },
+      "reason": "wrong orderType, price"
+    },
+    {
+      "id": "gen-phr-005",
+      "category": "phrasing",
+      "transcript": "let's grab 12 shares of JP Morgan, 363.75",
+      "ms": 2123,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 12,
+          "rawSymbol": "JP Morgan",
+          "resolvedSymbol": "JPM",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 363.75
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-phr-006",
+      "category": "phrasing",
+      "transcript": "go ahead and get rid of 300 shares of Delta with a limit of 70.99",
+      "ms": 2084,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-phr-007",
+      "category": "phrasing",
+      "transcript": "could you dump 25 shares of Walmart with a limit of 561.10 for me",
+      "ms": 2671,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 25,
+          "rawSymbol": "Walmart",
+          "resolvedSymbol": "WMT",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.95,
+          "limitPrice": 561.1
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-phr-008",
+      "category": "phrasing",
+      "transcript": "let's get me 5 shares of Netflix, 275.05",
+      "ms": 2074,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-phr-009",
+      "category": "phrasing",
+      "transcript": "at market price, get me 150 shares of Intel",
+      "ms": 2048,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-phr-010",
+      "category": "phrasing",
+      "transcript": "could you pick up 5 shares of Intel at market for me",
+      "ms": 2026,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 5,
+          "rawSymbol": "Intel",
+          "resolvedSymbol": "INTC",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-phr-011",
+      "category": "phrasing",
+      "transcript": "let's grab 5000 shares of Walmart, market",
+      "ms": 2149,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 5000,
+          "rawSymbol": "Walmart",
+          "resolvedSymbol": "WMT",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-phr-013",
+      "category": "phrasing",
+      "transcript": "let's pick up 200 shares of Nvidia, market",
+      "ms": 2112,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 200,
+          "rawSymbol": "Nvidia",
+          "resolvedSymbol": "NVDA",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-phr-015",
+      "category": "phrasing",
+      "transcript": "I'd like to pick up 40 JPMorgan at 324",
+      "ms": 2090,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 40,
+          "rawSymbol": "JPMorgan",
+          "resolvedSymbol": "JPM",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 324
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-phr-016",
+      "category": "phrasing",
+      "transcript": "please sell 400 JPMorgan with a limit of 178",
+      "ms": 2003,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 400,
+          "rawSymbol": "JPMorgan",
+          "resolvedSymbol": "JPM",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 1,
+          "limitPrice": 178
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-phr-017",
+      "category": "phrasing",
+      "transcript": "let's get rid of 75 shares of AMD, 299",
+      "ms": 2059,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-phr-018",
+      "category": "phrasing",
+      "transcript": "let's dump 500 shares of Delta Airlines, market price",
+      "ms": 2130,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 500,
+          "rawSymbol": "Delta Airlines",
+          "resolvedSymbol": "DAL",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-phr-020",
+      "category": "phrasing",
+      "transcript": "let's add 500 shares of Coca Cola, limit 68.10",
+      "ms": 2217,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-phr-021",
+      "category": "phrasing",
+      "transcript": "let's get me 50 shares of JPMorgan, the market",
+      "ms": 2658,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 50,
+          "rawSymbol": "JPMorgan",
+          "resolvedSymbol": "JPM",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.95
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-phr-022",
+      "category": "phrasing",
+      "transcript": "let's dump 5 shares of Nvidia, with a limit of 130.10",
+      "ms": 2116,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 5,
+          "rawSymbol": "Nvidia",
+          "resolvedSymbol": "NVDA",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 130.1
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-phr-023",
+      "category": "phrasing",
+      "transcript": "go ahead and pick up 2500 shares of Coca Cola with a limit of 270",
+      "ms": 2169,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 2500,
+          "rawSymbol": "Coca Cola",
+          "resolvedSymbol": "KO",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.95,
+          "limitPrice": 270
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-phr-025",
+      "category": "phrasing",
+      "transcript": "at 378.99, unload 5 shares of American Airlines",
+      "ms": 2159,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 5,
+          "rawSymbol": "American Airlines",
+          "resolvedSymbol": "AAL",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 378.99
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-phr-026",
+      "category": "phrasing",
+      "transcript": "I'd like to get rid of 2000 Facebook at market",
+      "ms": 2070,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-phr-027",
+      "category": "phrasing",
+      "transcript": "I'd like to get me 500 Amex at the market",
+      "ms": 2065,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-phr-028",
+      "category": "phrasing",
+      "transcript": "limit 172.50, get me 2500 shares of Google",
+      "ms": 2171,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-phr-029",
+      "category": "phrasing",
+      "transcript": "go ahead and dump 5 shares of Nvidia at 529.05",
+      "ms": 2122,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 5,
+          "rawSymbol": "Nvidia",
+          "resolvedSymbol": "NVDA",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 529.05
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-phr-030",
+      "category": "phrasing",
+      "transcript": "could you add 50 shares of Intel at the market for me",
+      "ms": 2030,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 50,
+          "rawSymbol": "Intel",
+          "resolvedSymbol": "INTC",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.9
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-fil-001",
+      "category": "filler",
+      "transcript": "yeah grab 12 shares of alright Coke at 539.25",
+      "ms": 2235,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 12,
+          "rawSymbol": "Coke",
+          "resolvedSymbol": "KO",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 539.25
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-fil-002",
+      "category": "filler",
+      "transcript": "grab 40 shares of Boeing at the okay so market",
+      "ms": 2122,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 40,
+          "rawSymbol": "Boeing",
+          "resolvedSymbol": "BA",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.9
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-fil-003",
+      "category": "filler",
+      "transcript": "buy 150 shares so of JPMorgan at the market",
+      "ms": 2135,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 150,
+          "rawSymbol": "JPMorgan",
+          "resolvedSymbol": "JPM",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-fil-004",
+      "category": "filler",
+      "transcript": "unload 50 shares of JPMorgan uh at 18",
+      "ms": 2091,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 50,
+          "rawSymbol": "JPMorgan",
+          "resolvedSymbol": "JPM",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.9,
+          "limitPrice": 18
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-fil-005",
+      "category": "filler",
+      "transcript": "grab 100 yeah shares of Delta at market",
+      "ms": 2037,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 100,
+          "rawSymbol": "Delta",
+          "resolvedSymbol": "DAL",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-fil-007",
+      "category": "filler",
+      "transcript": "get rid of 1 shares of so Advanced Micro Devices at the market",
+      "ms": 2278,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-fil-008",
+      "category": "filler",
+      "transcript": "get rid of 1500 shares of Bank of America limit uh 597.05",
+      "ms": 2373,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-fil-009",
+      "category": "filler",
+      "transcript": "grab 250 shares of Walmart at the uh okay so market",
+      "ms": 2102,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 250,
+          "rawSymbol": "Walmart",
+          "resolvedSymbol": "WMT",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.9
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-fil-011",
+      "category": "filler",
+      "transcript": "get me 25 uh shares of Boeing at 481.05",
+      "ms": 2185,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-fil-014",
+      "category": "filler",
+      "transcript": "buy 200 like shares of Coca Cola at okay so the market",
+      "ms": 2224,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 200,
+          "rawSymbol": "Coca Cola",
+          "resolvedSymbol": "KO",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.9
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-stp-001",
+      "category": "stop",
+      "transcript": "dump 1500 Netflix on a stop at 534",
+      "ms": 2091,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 1500,
+          "rawSymbol": "Netflix",
+          "resolvedSymbol": "NFLX",
+          "orderType": "STOP",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "stopPrice": 534
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-stp-003",
+      "category": "stop",
+      "transcript": "sell 150 shares of UnitedHealth with a stop at 509",
+      "ms": 2227,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 150,
+          "rawSymbol": "UnitedHealth",
+          "resolvedSymbol": "UNH",
+          "orderType": "STOP",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "stopPrice": 509
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-stp-004",
+      "category": "stop",
+      "transcript": "get rid of 2500 Nvidia on a stop at 492.75",
+      "ms": 2207,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-stp-005",
+      "category": "stop",
+      "transcript": "dump 100 shares of Apple with a stop at 127",
+      "ms": 2009,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 100,
+          "rawSymbol": "Apple",
+          "resolvedSymbol": "AAPL",
+          "orderType": "STOP",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "stopPrice": 127
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-stp-006",
+      "category": "stop",
+      "transcript": "dump 1000 shares of American Airlines with a stop at 555.05",
+      "ms": 2224,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 1000,
+          "rawSymbol": "American Airlines",
+          "resolvedSymbol": "AAL",
+          "orderType": "STOP",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "stopPrice": 555.05
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-stp-008",
+      "category": "stop",
+      "transcript": "get me 10 shares of UnitedHealth with a stop at 49.10",
+      "ms": 2827,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 10,
+          "rawSymbol": "UnitedHealth",
+          "resolvedSymbol": "UNH",
+          "orderType": "STOP",
+          "assetClass": "EQUITY",
+          "confidence": 0.95,
+          "stopPrice": 49.1
+        }
+      },
+      "pass": false,
+      "fields": {
+        "side": false,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      },
+      "reason": "wrong side"
+    },
+    {
+      "id": "gen-stp-009",
+      "category": "stop",
+      "transcript": "stop order to get me 750 American Express at 328.25",
+      "ms": 2178,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-stp-011",
+      "category": "stop",
+      "transcript": "get rid of 750 shares of Bank of America with a stop at 77.25",
+      "ms": 2938,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 750,
+          "rawSymbol": "Bank of America",
+          "resolvedSymbol": "BAC",
+          "orderType": "STOP",
+          "assetClass": "EQUITY",
+          "confidence": 0.95,
+          "stopPrice": 77.25
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-stp-012",
+      "category": "stop",
+      "transcript": "stop order to pick up 1500 United Airlines at 335.99",
+      "ms": 2269,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-stp-015",
+      "category": "stop",
+      "transcript": "buy 2000 shares of Netflix with a stop at 57.10",
+      "ms": 2478,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 2000,
+          "rawSymbol": "Netflix",
+          "resolvedSymbol": "NFLX",
+          "orderType": "STOP",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "stopPrice": 57.1
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-stp-016",
+      "category": "stop",
+      "transcript": "add 1500 Apple on a stop at 293.10",
+      "ms": 2163,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-stp-017",
+      "category": "stop",
+      "transcript": "get me 1000 shares of Coca Cola with a stop at 222",
+      "ms": 2292,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-stp-018",
+      "category": "stop",
+      "transcript": "stop order to sell 12 Amazon at 95.25",
+      "ms": 3039,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 12,
+          "rawSymbol": "Amazon",
+          "resolvedSymbol": "AMZN",
+          "orderType": "STOP",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "stopPrice": 95.25
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-stp-019",
+      "category": "stop",
+      "transcript": "stop order to add 75 Intel at 600",
+      "ms": 2147,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-stp-020",
+      "category": "stop",
+      "transcript": "stop order to sell 5000 Disney at 87.99",
+      "ms": 2719,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 5000,
+          "rawSymbol": "Disney",
+          "resolvedSymbol": "DIS",
+          "orderType": "STOP",
+          "assetClass": "EQUITY",
+          "confidence": 1,
+          "stopPrice": 87.99
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-cor-001",
+      "category": "correction",
+      "transcript": "unload 2000 Nvidia, no JP Morgan, at 494",
+      "ms": 2181,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 2000,
+          "rawSymbol": "Nvidia",
+          "resolvedSymbol": "NVDA",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 494
+        }
+      },
+      "pass": false,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": false,
+        "orderType": true,
+        "price": true
+      },
+      "reason": "wrong symbol"
+    },
+    {
+      "id": "gen-cor-002",
+      "category": "correction",
+      "transcript": "grab 100 Tesla, sorry Netflix, limit 113.05",
+      "ms": 2171,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 100,
+          "rawSymbol": "Tesla",
+          "resolvedSymbol": "TSLA",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.9,
+          "limitPrice": 113.05
+        }
+      },
+      "pass": false,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": false,
+        "orderType": true,
+        "price": true
+      },
+      "reason": "wrong symbol"
+    },
+    {
+      "id": "gen-cor-003",
+      "category": "correction",
+      "transcript": "get me 2000, scratch that, 1000 shares of Tesla with a limit of 272",
+      "ms": 2197,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-cor-004",
+      "category": "correction",
+      "transcript": "dump 250, sorry, 10 shares of Netflix at the market",
+      "ms": 2637,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 10,
+          "rawSymbol": "Netflix",
+          "resolvedSymbol": "NFLX",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-cor-005",
+      "category": "correction",
+      "transcript": "unload 25, sorry, 50 shares of American Airlines limit 212",
+      "ms": 2221,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-cor-007",
+      "category": "correction",
+      "transcript": "add 50 AMD, no American Airlines, at market",
+      "ms": 2192,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-cor-008",
+      "category": "correction",
+      "transcript": "unload 200 shares of Bank of America at 140.05, actually make that 138.55",
+      "ms": 2312,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 200,
+          "rawSymbol": "Bank of America",
+          "resolvedSymbol": "BAC",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.95,
+          "limitPrice": 138.55
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-cor-009",
+      "category": "correction",
+      "transcript": "get me 1500, no, 3000 shares of Delta Airlines at 240.25",
+      "ms": 2339,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "false reject: MISSING_FIELDS (Missing required fields: side.)"
+    },
+    {
+      "id": "gen-cor-010",
+      "category": "correction",
+      "transcript": "buy 5000 Tesla, I mean United Airlines, with a limit of 68.25",
+      "ms": 2347,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 5000,
+          "rawSymbol": "United Airlines",
+          "resolvedSymbol": "UAL",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.95,
+          "limitPrice": 68.25
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-cor-012",
+      "category": "correction",
+      "transcript": "sell 150 UnitedHealth, I mean Nvidia, at market price",
+      "ms": 2226,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 150,
+          "rawSymbol": "Nvidia",
+          "resolvedSymbol": "NVDA",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.9
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-cor-014",
+      "category": "correction",
+      "transcript": "unload 200 Google, sorry United Airlines, at market price",
+      "ms": 2267,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 200,
+          "rawSymbol": "United Airlines",
+          "resolvedSymbol": "UAL",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "gen-amb-001",
+      "category": "ambiguous",
+      "transcript": "dump 2000 shares of United with a limit of 30.05",
+      "ms": 2290,
+      "got": {
+        "kind": "error",
+        "code": "AMBIGUOUS_SYMBOL",
+        "candidates": [
+          "UAL",
+          "UNH"
+        ],
+        "message": "\"United\" is ambiguous — please choose a ticker."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-amb-002",
+      "category": "ambiguous",
+      "transcript": "get me 2500 shares of United at 183",
+      "ms": 2492,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "error MISSING_FIELDS, expected AMBIGUOUS_SYMBOL"
+    },
+    {
+      "id": "gen-amb-003",
+      "category": "ambiguous",
+      "transcript": "get rid of 200 shares of American limit 219",
+      "ms": 2266,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "error MISSING_FIELDS, expected AMBIGUOUS_SYMBOL"
+    },
+    {
+      "id": "gen-amb-004",
+      "category": "ambiguous",
+      "transcript": "sell 5000 shares of United at market price",
+      "ms": 2217,
+      "got": {
+        "kind": "error",
+        "code": "AMBIGUOUS_SYMBOL",
+        "candidates": [
+          "UAL",
+          "UNH"
+        ],
+        "message": "\"United\" is ambiguous — please choose a ticker."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-amb-005",
+      "category": "ambiguous",
+      "transcript": "add 1 shares of American with a limit of 111.05",
+      "ms": 2245,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "error MISSING_FIELDS, expected AMBIGUOUS_SYMBOL"
+    },
+    {
+      "id": "gen-amb-007",
+      "category": "ambiguous",
+      "transcript": "unload 75 shares of United at market",
+      "ms": 2233,
+      "got": {
+        "kind": "error",
+        "code": "AMBIGUOUS_SYMBOL",
+        "candidates": [
+          "UAL",
+          "UNH"
+        ],
+        "message": "\"United\" is ambiguous — please choose a ticker."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-amb-008",
+      "category": "ambiguous",
+      "transcript": "purchase 75 shares of American at market price",
+      "ms": 2287,
+      "got": {
+        "kind": "error",
+        "code": "AMBIGUOUS_SYMBOL",
+        "candidates": [
+          "AAL",
+          "AXP"
+        ],
+        "message": "\"American\" is ambiguous — please choose a ticker."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-amb-009",
+      "category": "ambiguous",
+      "transcript": "purchase 1000 shares of American with a limit of 581.99",
+      "ms": 2426,
+      "got": {
+        "kind": "error",
+        "code": "AMBIGUOUS_SYMBOL",
+        "candidates": [
+          "AAL",
+          "AXP"
+        ],
+        "message": "\"American\" is ambiguous — please choose a ticker."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-amb-010",
+      "category": "ambiguous",
+      "transcript": "get rid of 300 shares of American limit 345.25",
+      "ms": 2268,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "error MISSING_FIELDS, expected AMBIGUOUS_SYMBOL"
+    },
+    {
+      "id": "gen-amb-011",
+      "category": "ambiguous",
+      "transcript": "get me 5000 shares of United with a limit of 22",
+      "ms": 2176,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "error MISSING_FIELDS, expected AMBIGUOUS_SYMBOL"
+    },
+    {
+      "id": "gen-amb-012",
+      "category": "ambiguous",
+      "transcript": "purchase 400 shares of American at 465.05",
+      "ms": 2522,
+      "got": {
+        "kind": "error",
+        "code": "AMBIGUOUS_SYMBOL",
+        "candidates": [
+          "AAL",
+          "AXP"
+        ],
+        "message": "\"American\" is ambiguous — please choose a ticker."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-unk-001",
+      "category": "unknown_symbol",
+      "transcript": "sell 50 shares of Kestrel Biotech at 39",
+      "ms": 2532,
+      "got": {
+        "kind": "error",
+        "code": "AMBIGUOUS_SYMBOL",
+        "candidates": [],
+        "message": "Could not resolve \"Kestrel Biotech\" to a known ticker symbol."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-unk-002",
+      "category": "unknown_symbol",
+      "transcript": "purchase 1500 shares of Hyperion Widgets at market",
+      "ms": 2363,
+      "got": {
+        "kind": "error",
+        "code": "AMBIGUOUS_SYMBOL",
+        "candidates": [],
+        "message": "Could not resolve \"Hyperion Widgets\" to a known ticker symbol."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-unk-003",
+      "category": "unknown_symbol",
+      "transcript": "sell 5000 shares of Zorblex at market price",
+      "ms": 2448,
+      "got": {
+        "kind": "error",
+        "code": "AMBIGUOUS_SYMBOL",
+        "candidates": [],
+        "message": "Could not resolve \"Zorblex\" to a known ticker symbol."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-unk-004",
+      "category": "unknown_symbol",
+      "transcript": "grab 300 shares of Kestrel Biotech limit 131",
+      "ms": 2261,
+      "got": {
+        "kind": "error",
+        "code": "AMBIGUOUS_SYMBOL",
+        "candidates": [],
+        "message": "Could not resolve \"Kestrel Biotech\" to a known ticker symbol."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-unk-005",
+      "category": "unknown_symbol",
+      "transcript": "unload 750 shares of Quantaflux Labs at market",
+      "ms": 2383,
+      "got": {
+        "kind": "error",
+        "code": "AMBIGUOUS_SYMBOL",
+        "candidates": [],
+        "message": "Could not resolve \"Quantaflux Labs\" to a known ticker symbol."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-unk-007",
+      "category": "unknown_symbol",
+      "transcript": "buy 1500 shares of Mondavi Shipping at 266.99",
+      "ms": 2400,
+      "got": {
+        "kind": "error",
+        "code": "AMBIGUOUS_SYMBOL",
+        "candidates": [],
+        "message": "Could not resolve \"Mondavi Shipping\" to a known ticker symbol."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-unk-008",
+      "category": "unknown_symbol",
+      "transcript": "sell 5000 shares of Bluefin Robotics at the market",
+      "ms": 2351,
+      "got": {
+        "kind": "error",
+        "code": "AMBIGUOUS_SYMBOL",
+        "candidates": [],
+        "message": "Could not resolve \"Bluefin Robotics\" to a known ticker symbol."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-unk-009",
+      "category": "unknown_symbol",
+      "transcript": "get me 25 shares of Hyperion Widgets with a limit of 15",
+      "ms": 2260,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "error MISSING_FIELDS, expected AMBIGUOUS_SYMBOL"
+    },
+    {
+      "id": "gen-unk-010",
+      "category": "unknown_symbol",
+      "transcript": "get rid of 100 shares of Zorblex at market",
+      "ms": 2646,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": false,
+      "reason": "error MISSING_FIELDS, expected AMBIGUOUS_SYMBOL"
+    },
+    {
+      "id": "gen-msd-002",
+      "category": "missing_side",
+      "transcript": "Bank of America, 300 shares, at market price",
+      "ms": 2260,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-msd-003",
+      "category": "missing_side",
+      "transcript": "2000 Microsoft with a limit of 540",
+      "ms": 2113,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-msd-004",
+      "category": "missing_side",
+      "transcript": "250 shares of American Airlines limit 522.50",
+      "ms": 2232,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-msd-007",
+      "category": "missing_side",
+      "transcript": "2000 shares of Tesla with a limit of 275.75",
+      "ms": 2253,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-msd-010",
+      "category": "missing_side",
+      "transcript": "100 shares of Walmart at the market",
+      "ms": 2172,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-msd-011",
+      "category": "missing_side",
+      "transcript": "Intel, 40 shares, at 94",
+      "ms": 2084,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-msd-012",
+      "category": "missing_side",
+      "transcript": "400 Delta limit 189",
+      "ms": 2134,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-msd-013",
+      "category": "missing_side",
+      "transcript": "Bank of America, 5 shares, at the market",
+      "ms": 2238,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-msd-015",
+      "category": "missing_side",
+      "transcript": "Intel, 5000 shares, at market price",
+      "ms": 2217,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-mqt-001",
+      "category": "missing_quantity",
+      "transcript": "buy Alphabet at the market",
+      "ms": 2168,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: quantity."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-mqt-002",
+      "category": "missing_quantity",
+      "transcript": "get rid of Coca Cola with a limit of 109.25",
+      "ms": 2342,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side, quantity."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-mqt-005",
+      "category": "missing_quantity",
+      "transcript": "pick up a few shares of Walmart at the market",
+      "ms": 2194,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: quantity."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-mqt-006",
+      "category": "missing_quantity",
+      "transcript": "get rid of some American Airlines at market",
+      "ms": 2862,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: quantity."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-mqt-007",
+      "category": "missing_quantity",
+      "transcript": "purchase United Airlines limit 509.50",
+      "ms": 2429,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: quantity."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-mqt-008",
+      "category": "missing_quantity",
+      "transcript": "unload some Microsoft limit 383.05",
+      "ms": 2117,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: quantity."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-mqt-009",
+      "category": "missing_quantity",
+      "transcript": "buy some Advanced Micro Devices at market",
+      "ms": 2351,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: quantity."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-mqt-010",
+      "category": "missing_quantity",
+      "transcript": "get me Coke at the market",
+      "ms": 2124,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side, quantity."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-mqt-011",
+      "category": "missing_quantity",
+      "transcript": "get me some Advanced Micro Devices at 536",
+      "ms": 2185,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side, quantity."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-mqt-014",
+      "category": "missing_quantity",
+      "transcript": "purchase some Coca Cola at market price",
+      "ms": 2294,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: quantity."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-mqt-015",
+      "category": "missing_quantity",
+      "transcript": "get rid of a few shares of Meta at market",
+      "ms": 2685,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: quantity."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-mpr-002",
+      "category": "missing_price",
+      "transcript": "unload 5 American Airlines, limit price",
+      "ms": 2218,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: limitPrice."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-mpr-004",
+      "category": "missing_price",
+      "transcript": "get me 150 Netflix on a limit order",
+      "ms": 2085,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side, limitPrice."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-mpr-006",
+      "category": "missing_price",
+      "transcript": "buy 75 shares of Boeing with a stop",
+      "ms": 2234,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: stopPrice."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-mpr-007",
+      "category": "missing_price",
+      "transcript": "get rid of 1000 Meta on a limit order",
+      "ms": 2189,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side, limitPrice."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-mpr-008",
+      "category": "missing_price",
+      "transcript": "buy 40 shares of Nvidia with a stop",
+      "ms": 2186,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: stopPrice."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-mpr-009",
+      "category": "missing_price",
+      "transcript": "unload 1500 Boeing on a limit order",
+      "ms": 2246,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: limitPrice."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-mpr-010",
+      "category": "missing_price",
+      "transcript": "dump 75 shares of Apple with a stop",
+      "ms": 2260,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: stopPrice."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-non-002",
+      "category": "non_order",
+      "transcript": "how is my portfolio doing today",
+      "ms": 1636,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side, quantity, symbol, orderType."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-non-003",
+      "category": "non_order",
+      "transcript": "pull up the chart for Nvidia",
+      "ms": 2911,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side, quantity, symbol, orderType."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-non-004",
+      "category": "non_order",
+      "transcript": "remind me to call the desk at three",
+      "ms": 2015,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side, quantity, symbol, orderType."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-non-006",
+      "category": "non_order",
+      "transcript": "show me my open positions",
+      "ms": 1922,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side, quantity, symbol, orderType."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-non-007",
+      "category": "non_order",
+      "transcript": "what did Apple close at yesterday",
+      "ms": 2062,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side, quantity, orderType."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-non-008",
+      "category": "non_order",
+      "transcript": "mute the alerts please",
+      "ms": 3331,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-non-009",
+      "category": "non_order",
+      "transcript": "never mind",
+      "ms": 3100,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": true
+    },
+    {
+      "id": "gen-non-010",
+      "category": "non_order",
+      "transcript": "Microsoft earnings are next week right",
+      "ms": 2227,
+      "got": {
+        "kind": "error",
+        "code": "PARSE_FAILED",
+        "candidates": [],
+        "message": "Not confident enough in the interpretation. Please repeat the order."
+      },
+      "pass": true
+    },
+    {
+      "id": "hw-001",
+      "category": "canonical",
+      "transcript": "Buy 100 shares of AAPL at 195.50",
+      "ms": 2289,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 100,
+          "rawSymbol": "AAPL",
+          "resolvedSymbol": "AAPL",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 1,
+          "limitPrice": 195.5
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-002",
+      "category": "canonical",
+      "transcript": "Sell 500 shares of MSFT at the market",
+      "ms": 2234,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 500,
+          "rawSymbol": "MSFT",
+          "resolvedSymbol": "MSFT",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 1
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-003",
+      "category": "company_name",
+      "transcript": "buy 250 shares of Apple at 190",
+      "ms": 2134,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 250,
+          "rawSymbol": "Apple",
+          "resolvedSymbol": "AAPL",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 190
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-004",
+      "category": "company_name",
+      "transcript": "sell 50 Tesla shares at market",
+      "ms": 2199,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 50,
+          "rawSymbol": "Tesla",
+          "resolvedSymbol": "TSLA",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-005",
+      "category": "company_name",
+      "transcript": "buy 75 shares of Coca Cola at the market",
+      "ms": 2624,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 75,
+          "rawSymbol": "Coca Cola",
+          "resolvedSymbol": "KO",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-006",
+      "category": "company_name",
+      "transcript": "pick up 120 shares of Bank of America at 39.80",
+      "ms": 2344,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 120,
+          "rawSymbol": "Bank of America",
+          "resolvedSymbol": "BAC",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 39.8
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-007",
+      "category": "spoken_numbers",
+      "transcript": "grab me two hundred Apple shares at market",
+      "ms": 2194,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 200,
+          "rawSymbol": "Apple",
+          "resolvedSymbol": "AAPL",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-008",
+      "category": "spoken_numbers",
+      "transcript": "I'd like to buy a thousand shares of Nvidia with a limit of 190",
+      "ms": 2216,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 1000,
+          "rawSymbol": "Nvidia",
+          "resolvedSymbol": "NVDA",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 1,
+          "limitPrice": 190
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-009",
+      "category": "spoken_numbers",
+      "transcript": "sell fifty Microsoft at 410.25",
+      "ms": 2279,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 50,
+          "rawSymbol": "Microsoft",
+          "resolvedSymbol": "MSFT",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 410.25
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-010",
+      "category": "spoken_numbers",
+      "transcript": "buy 1,500 shares of Intel at the market",
+      "ms": 2279,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 1500,
+          "rawSymbol": "Intel",
+          "resolvedSymbol": "INTC",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-011",
+      "category": "phrasing",
+      "transcript": "could you please sell 300 shares of Disney at 95 dollars",
+      "ms": 2878,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 300,
+          "rawSymbol": "Disney",
+          "resolvedSymbol": "DIS",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 1,
+          "limitPrice": 95
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-012",
+      "category": "phrasing",
+      "transcript": "at the market, buy 40 shares of Netflix",
+      "ms": 2220,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 40,
+          "rawSymbol": "Netflix",
+          "resolvedSymbol": "NFLX",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-013",
+      "category": "filler",
+      "transcript": "um okay so let me buy uh 60 shares of Amazon at 178.20",
+      "ms": 2249,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 60,
+          "rawSymbol": "Amazon",
+          "resolvedSymbol": "AMZN",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 178.2
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-014",
+      "category": "phrasing",
+      "transcript": "unload 800 shares of Boeing at market price",
+      "ms": 2313,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 800,
+          "rawSymbol": "Boeing",
+          "resolvedSymbol": "BA",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-015",
+      "category": "phrasing",
+      "transcript": "pick up 25 shares of JPMorgan at 210",
+      "ms": 2313,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 25,
+          "rawSymbol": "JPMorgan",
+          "resolvedSymbol": "JPM",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 210
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-016",
+      "category": "stop",
+      "transcript": "sell 100 shares of Apple with a stop at 180",
+      "ms": 2106,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 100,
+          "rawSymbol": "Apple",
+          "resolvedSymbol": "AAPL",
+          "orderType": "STOP",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "stopPrice": 180
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-017",
+      "category": "stop",
+      "transcript": "put in a stop loss to sell 200 Tesla at 220",
+      "ms": 2144,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 200,
+          "rawSymbol": "Tesla",
+          "resolvedSymbol": "TSLA",
+          "orderType": "STOP",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "stopPrice": 220
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-018",
+      "category": "ambiguous",
+      "transcript": "buy a hundred United at market",
+      "ms": 2185,
+      "got": {
+        "kind": "error",
+        "code": "AMBIGUOUS_SYMBOL",
+        "candidates": [
+          "UAL",
+          "UNH"
+        ],
+        "message": "\"United\" is ambiguous — please choose a ticker."
+      },
+      "pass": true
+    },
+    {
+      "id": "hw-019",
+      "category": "ambiguous",
+      "transcript": "sell 60 shares of American at the market",
+      "ms": 2187,
+      "got": {
+        "kind": "error",
+        "code": "AMBIGUOUS_SYMBOL",
+        "candidates": [
+          "AAL",
+          "AXP"
+        ],
+        "message": "\"American\" is ambiguous — please choose a ticker."
+      },
+      "pass": true
+    },
+    {
+      "id": "hw-020",
+      "category": "missing_quantity",
+      "transcript": "buy some Apple at market",
+      "ms": 2547,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: quantity."
+      },
+      "pass": true
+    },
+    {
+      "id": "hw-021",
+      "category": "missing_side",
+      "transcript": "100 shares of AAPL at 195",
+      "ms": 2226,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": true
+    },
+    {
+      "id": "hw-022",
+      "category": "missing_side",
+      "transcript": "200 shares of Microsoft at market",
+      "ms": 2241,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side."
+      },
+      "pass": true
+    },
+    {
+      "id": "hw-023",
+      "category": "non_order",
+      "transcript": "what is the weather like today",
+      "ms": 1579,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side, quantity, symbol, orderType."
+      },
+      "pass": true
+    },
+    {
+      "id": "hw-024",
+      "category": "unknown_symbol",
+      "transcript": "buy 100 shares of Zorblex Industries at market",
+      "ms": 2598,
+      "got": {
+        "kind": "error",
+        "code": "AMBIGUOUS_SYMBOL",
+        "candidates": [],
+        "message": "Could not resolve \"Zorblex Industries\" to a known ticker symbol."
+      },
+      "pass": true
+    },
+    {
+      "id": "hw-025",
+      "category": "correction",
+      "transcript": "buy two hundred, no wait, three hundred shares of Apple at market",
+      "ms": 2517,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 300,
+          "rawSymbol": "Apple",
+          "resolvedSymbol": "AAPL",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.9
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-026",
+      "category": "correction",
+      "transcript": "sell 100 Tesla at 250, actually make that 245",
+      "ms": 2077,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 100,
+          "rawSymbol": "Tesla",
+          "resolvedSymbol": "TSLA",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 245
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-029",
+      "category": "spoken_numbers",
+      "transcript": "buy fifteen hundred shares of Intel at market",
+      "ms": 2264,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 1500,
+          "rawSymbol": "Intel",
+          "resolvedSymbol": "INTC",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 0.98
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-030",
+      "category": "spoken_numbers",
+      "transcript": "sell a dozen shares of Netflix at 600",
+      "ms": 2147,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 12,
+          "rawSymbol": "Netflix",
+          "resolvedSymbol": "NFLX",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 600
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-031",
+      "category": "spoken_numbers",
+      "transcript": "buy 100 Apple at one ninety five fifty",
+      "ms": 2247,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 100,
+          "rawSymbol": "Apple",
+          "resolvedSymbol": "AAPL",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 195.5
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-034",
+      "category": "canonical",
+      "transcript": "buy 100 shares of A A P L at market",
+      "ms": 2405,
+      "got": {
+        "kind": "error",
+        "code": "AMBIGUOUS_SYMBOL",
+        "candidates": [],
+        "message": "Could not resolve \"A A P L\" to a known ticker symbol."
+      },
+      "pass": false,
+      "reason": "false reject: AMBIGUOUS_SYMBOL (Could not resolve \"A A P L\" to a known ticker symbol.)"
+    },
+    {
+      "id": "hw-035",
+      "category": "phrasing",
+      "transcript": "buy 100 shares of Apple limit 190",
+      "ms": 2217,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "BUY",
+          "quantity": 100,
+          "rawSymbol": "Apple",
+          "resolvedSymbol": "AAPL",
+          "orderType": "LIMIT",
+          "assetClass": "EQUITY",
+          "confidence": 0.98,
+          "limitPrice": 190
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-036",
+      "category": "phrasing",
+      "transcript": "sell 500 Microsoft, market order",
+      "ms": 2221,
+      "got": {
+        "kind": "order",
+        "order": {
+          "side": "SELL",
+          "quantity": 500,
+          "rawSymbol": "Microsoft",
+          "resolvedSymbol": "MSFT",
+          "orderType": "MARKET",
+          "assetClass": "EQUITY",
+          "confidence": 1
+        }
+      },
+      "pass": true,
+      "fields": {
+        "side": true,
+        "quantity": true,
+        "symbol": true,
+        "orderType": true,
+        "price": true
+      }
+    },
+    {
+      "id": "hw-039",
+      "category": "non_order",
+      "transcript": "how much is Apple trading at right now",
+      "ms": 2356,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side, quantity, orderType."
+      },
+      "pass": true
+    },
+    {
+      "id": "hw-040",
+      "category": "non_order",
+      "transcript": "cancel my last order",
+      "ms": 2063,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: side, quantity, symbol, orderType."
+      },
+      "pass": true
+    },
+    {
+      "id": "hw-042",
+      "category": "missing_price",
+      "transcript": "buy 100 shares of Apple with a limit",
+      "ms": 2278,
+      "got": {
+        "kind": "error",
+        "code": "MISSING_FIELDS",
+        "candidates": [],
+        "message": "Missing required fields: limitPrice."
+      },
+      "pass": true
+    }
+  ]
+}

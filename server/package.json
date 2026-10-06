@@ -9,7 +9,9 @@
     "start": "node dist/index.js",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "jest"
+    "test": "jest",
+    "eval": "tsx eval/run.mts",
+    "eval:generate": "tsx eval/generate.mts"
   },
   "dependencies": {
     "@silexx/shared": "*",
