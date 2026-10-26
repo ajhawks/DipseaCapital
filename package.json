@@ -11,10 +11,10 @@
     "dev:client": "npm run dev --workspace=client",
     "dev:server": "npm run dev --workspace=server",
     "build": "npm run build --workspaces",
-    "lint": "npm run lint --workspaces",
+    "lint": "npm run lint --workspaces --if-present",
     "format": "prettier --write \"**/*.{ts,tsx,js,json}\" --ignore-path .gitignore",
     "typecheck": "npm run typecheck --workspaces",
-    "test": "npm test --workspaces",
+    "test": "npm test --workspaces --if-present",
     "test:e2e": "playwright test"
   },
   "devDependencies": {
