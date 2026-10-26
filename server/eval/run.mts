@@ -20,6 +20,7 @@ import { config as loadEnv } from 'dotenv';
 import type { ParsedOrder } from '@silexx/shared';
 import type { Category, EvalCase, ExpectOrder } from './types.js';
 import { TRAP_CATEGORIES } from './types.js';
+import { fmtRate, rate, type Rate } from './stats.js';
 
 const here = (p: string) => fileURLToPath(new URL(p, import.meta.url));
 loadEnv({ path: here('../../.env') });
@@ -99,16 +100,26 @@ function grade(c: EvalCase, got: Outcome): Pick<CaseResult, 'pass' | 'fields' | 
   if (got.kind === 'crash') return { pass: false, reason: `crash: ${got.message}` };
 
   if (e.kind === 'order') {
-    if (got.kind === 'error') return { pass: false, reason: `false reject: ${got.code} (${got.message})` };
+    if (got.kind === 'error')
+      return { pass: false, reason: `false reject: ${got.code} (${got.message})` };
     const fields = gradeFields(e, got.order);
     const wrong = FIELDS.filter((f) => !fields[f]);
-    return { pass: wrong.length === 0, fields, ...(wrong.length ? { reason: `wrong ${wrong.join(', ')}` } : {}) };
+    return {
+      pass: wrong.length === 0,
+      fields,
+      ...(wrong.length ? { reason: `wrong ${wrong.join(', ')}` } : {}),
+    };
   }
 
-  if (got.kind === 'order') return { pass: false, reason: 'produced a draft but expected an error' };
-  if (e.code !== 'ANY' && got.code !== e.code) return { pass: false, reason: `error ${got.code}, expected ${e.code}` };
+  if (got.kind === 'order')
+    return { pass: false, reason: 'produced a draft but expected an error' };
+  if (e.code !== 'ANY' && got.code !== e.code)
+    return { pass: false, reason: `error ${got.code}, expected ${e.code}` };
   if (e.candidates && JSON.stringify([...got.candidates].sort()) !== JSON.stringify(e.candidates)) {
-    return { pass: false, reason: `candidates ${got.candidates.join(',')} ≠ ${e.candidates.join(',')}` };
+    return {
+      pass: false,
+      reason: `candidates ${got.candidates.join(',')} ≠ ${e.candidates.join(',')}`,
+    };
   }
   return { pass: true };
 }
@@ -118,7 +129,12 @@ async function run(transcript: string): Promise<Outcome> {
     return { kind: 'order', order: await interpretWithNLP(transcript) };
   } catch (err) {
     if (err instanceof ParseError) {
-      return { kind: 'error', code: err.code, candidates: (err.candidates ?? []).map((x) => x.symbol), message: err.message };
+      return {
+        kind: 'error',
+        code: err.code,
+        candidates: (err.candidates ?? []).map((x) => x.symbol),
+        message: err.message,
+      };
     }
     return { kind: 'crash', message: String(err) };
   }
@@ -132,8 +148,6 @@ function percentile(sorted: number[], p: number): number {
   return sorted[Math.max(0, idx)]!;
 }
 
-const ratio = (n: number, d: number) => (d === 0 ? null : Math.round((n / d) * 10000) / 10000);
-
 function summarize(results: CaseResult[], byId: Map<string, EvalCase>) {
   const expectOrder = results.filter((r) => byId.get(r.id)!.expect.kind === 'order');
   const drafted = expectOrder.filter((r) => r.fields);
@@ -142,28 +156,33 @@ function summarize(results: CaseResult[], byId: Map<string, EvalCase>) {
   const ms = results.map((r) => r.ms).sort((a, b) => a - b);
 
   const fieldAccuracy = Object.fromEntries(
-    FIELDS.map((f) => [f, ratio(drafted.filter((r) => r.fields![f]).length, drafted.length)]),
-  ) as Record<Field, number | null>;
+    FIELDS.map((f) => [f, rate(drafted.filter((r) => r.fields![f]).length, drafted.length)]),
+  ) as Record<Field, Rate | null>;
 
   const categories = [...new Set(results.map((r) => r.category))].sort();
   const byCategory = Object.fromEntries(
     categories.map((cat) => {
       const rs = results.filter((r) => r.category === cat);
-      return [cat, { n: rs.length, passed: rs.filter((r) => r.pass).length, accuracy: ratio(rs.filter((r) => r.pass).length, rs.length) }];
+      return [cat, rate(rs.filter((r) => r.pass).length, rs.length)!];
     }),
   );
 
   return {
     n: results.length,
-    caseAccuracy: ratio(results.filter((r) => r.pass).length, results.length),
+    caseAccuracy: rate(results.filter((r) => r.pass).length, results.length),
     fieldAccuracy,
     /** Valid orders the system refused (annoying, but safe). */
-    falseRejectRate: ratio(expectOrder.length - drafted.length, expectOrder.length),
+    falseRejectRate: rate(expectOrder.length - drafted.length, expectOrder.length),
     /** Trap / non-order inputs that produced a draft (dangerous). */
-    hallucinationRate: ratio(traps.filter((r) => r.got.kind === 'order').length, traps.length),
+    hallucinationRate: rate(traps.filter((r) => r.got.kind === 'order').length, traps.length),
     /** Ambiguous names correctly sent to the clarify flow with the right candidates. */
-    ambiguityRecall: ratio(ambiguous.filter((r) => r.pass).length, ambiguous.length),
-    latencyMs: { p50: percentile(ms, 50), p95: percentile(ms, 95), p99: percentile(ms, 99), max: ms.at(-1) ?? 0 },
+    ambiguityRecall: rate(ambiguous.filter((r) => r.pass).length, ambiguous.length),
+    latencyMs: {
+      p50: percentile(ms, 50),
+      p95: percentile(ms, 95),
+      p99: percentile(ms, 99),
+      max: ms.at(-1) ?? 0,
+    },
     byCategory,
   };
 }
@@ -171,7 +190,9 @@ function summarize(results: CaseResult[], byId: Map<string, EvalCase>) {
 // ── main ──────────────────────────────────────────────────────────────────────
 
 const model = process.env['LLM_MODEL'] ?? 'llama3.1:8b';
-console.log(`Eval: ${cases.length} cases · split=${split}${onlyCategory ? ` · category=${onlyCategory}` : ''} · model=${model}`);
+console.log(
+  `Eval: ${cases.length} cases · split=${split}${onlyCategory ? ` · category=${onlyCategory}` : ''} · model=${model}`,
+);
 
 // Warm-up: the first call loads the model into memory (seconds). Excluding it
 // keeps latency numbers about steady-state inference, not cold start.
@@ -189,30 +210,43 @@ for (const [i, c] of cases.entries()) {
   const g = grade(c, got);
   results.push({ id: c.id, category: c.category, transcript: c.transcript, ms, got, ...g });
   if (verbose || !g.pass) {
-    console.log(`${g.pass ? 'PASS' : 'FAIL'} [${ms}ms] ${c.id} "${c.transcript}"${g.reason ? ` → ${g.reason}` : ''}`);
+    console.log(
+      `${g.pass ? 'PASS' : 'FAIL'} [${ms}ms] ${c.id} "${c.transcript}"${g.reason ? ` → ${g.reason}` : ''}`,
+    );
   } else if ((i + 1) % 25 === 0) {
     console.log(`  … ${i + 1}/${cases.length}`);
   }
 }
 
 const metrics = summarize(results, byId);
-const pct = (x: number | null) => (x === null ? '  n/a' : `${(x * 100).toFixed(1).padStart(5)}%`);
 
-console.log('\n── summary ─────────────────────────────────────────');
-console.log(`case accuracy      ${pct(metrics.caseAccuracy)}  (${results.filter((r) => r.pass).length}/${metrics.n})`);
-console.log(`hallucination rate ${pct(metrics.hallucinationRate)}  (lower is better)`);
-console.log(`false reject rate  ${pct(metrics.falseRejectRate)}  (lower is better)`);
-console.log(`ambiguity recall   ${pct(metrics.ambiguityRecall)}`);
-console.log(`field accuracy     ${FIELDS.map((f) => `${f} ${pct(metrics.fieldAccuracy[f])}`).join(' · ')}`);
-console.log(`latency            p50 ${metrics.latencyMs.p50}ms · p95 ${metrics.latencyMs.p95}ms · p99 ${metrics.latencyMs.p99}ms`);
+console.log('\n── summary (95% CI in brackets) ────────────────────');
+console.log(
+  `case accuracy      ${fmtRate(metrics.caseAccuracy)}  (${results.filter((r) => r.pass).length}/${metrics.n})`,
+);
+console.log(`hallucination rate ${fmtRate(metrics.hallucinationRate)}  (lower is better)`);
+console.log(`false reject rate  ${fmtRate(metrics.falseRejectRate)}  (lower is better)`);
+console.log(`ambiguity recall   ${fmtRate(metrics.ambiguityRecall)}`);
+console.log(
+  `field accuracy     ${FIELDS.map((f) => `${f} ${fmtRate(metrics.fieldAccuracy[f], false)}`).join(' · ')}`,
+);
+console.log(
+  `latency            p50 ${metrics.latencyMs.p50}ms · p95 ${metrics.latencyMs.p95}ms · p99 ${metrics.latencyMs.p99}ms`,
+);
 console.log('\nby category:');
 for (const [cat, s] of Object.entries(metrics.byCategory)) {
-  console.log(`  ${cat.padEnd(17)} ${pct(s.accuracy)}  (${s.passed}/${s.n})`);
+  console.log(`  ${cat.padEnd(17)} ${fmtRate(s)}  (${s.k}/${s.n})`);
 }
 
 if (save) {
   const sha = (cmd: string) => {
-    try { return execSync(cmd, { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim(); } catch { return 'unknown'; }
+    try {
+      return execSync(cmd, { stdio: ['ignore', 'pipe', 'ignore'] })
+        .toString()
+        .trim();
+    } catch {
+      return 'unknown';
+    }
   };
   // Fingerprint the NLP source so a result can be tied to the exact prompt/code.
   const nlpHash = createHash('sha256')
