@@ -13,6 +13,7 @@ export type Category =
   | 'filler' // um / uh / okay so
   | 'stop' // stop and stop-loss orders
   | 'correction' // speaker changes their mind mid-sentence
+  | 'side_lexicon' // buy/sell intent via slang verbs (get me, add, short, …)
   | 'ambiguous' // name maps to several tickers → must ask
   | 'unknown_symbol' // name maps to no ticker → must ask
   | 'missing_side' // trap: no buy/sell word
