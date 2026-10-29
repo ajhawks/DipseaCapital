@@ -3,6 +3,9 @@
 **Status:** Accepted
 **Date:** 2026-07-24
 
+*`DESIGN.md` §-references are to the original design doc, removed in S0.1
+(`git show dba25da:DESIGN.md`). The current spec is `DESIGN_DOC.md`.*
+
 ## Context
 
 Iteration 1's regex parser only accepts a clean ticker token and sets

@@ -4,6 +4,9 @@
 **Date:** 2026-07-24
 **Supersedes:** the earlier (abandoned) FastAPI/Postgres/Deepgram design records.
 
+*`DESIGN.md` §-references are to the original design doc, removed in S0.1
+(`git show dba25da:DESIGN.md`). The current spec is `DESIGN_DOC.md`.*
+
 ## Context
 
 Iteration 1 ships a rule-based regex parser (`server/src/services/parser`) that only
