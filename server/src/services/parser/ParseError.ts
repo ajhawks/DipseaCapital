@@ -1,6 +1,6 @@
-import type { OrderDraft, ParseErrorResponse, SymbolCandidate } from '@silexx/shared';
+import type { OrderDraft, SymbolCandidate } from '@silexx/shared';
 
-type ParseErrorCode = Exclude<ParseErrorResponse['code'], 'RATE_LIMITED'>;
+type ParseErrorCode = 'MISSING_FIELDS' | 'AMBIGUOUS_SYMBOL' | 'PARSE_FAILED';
 
 export class ParseError extends Error {
   public readonly code: ParseErrorCode;

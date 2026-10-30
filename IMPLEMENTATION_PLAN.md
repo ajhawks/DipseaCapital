@@ -610,6 +610,18 @@ then-uncommitted M1.2–M1.4 eval changes. The jump from v1 is the dataset, not 
 parser. Weakest dev categories: `side_lexicon` (76%), `correction` (82%),
 `filler` (85%).
 
+**Sprint branch `sprint-30min` (2026-10-30, experimental, may be scrapped).** A
+time-boxed attempt at the Phase 1 safety core plus the Core UI changes. It does
+**not** change any task status: the store is an in-memory, file-snapshotted
+stand-in for Postgres (D3a), so R-ATOMIC 6 (DB-enforced append-only) and the
+real-DB parts of S1.2/S1.5 aren't met. If kept, S1.x is redone on Postgres behind
+the same `Store` interface. Covered on the branch: S1.1 types, S1.3 validation,
+S1.6 duplicates, S1.2 lifecycle (version CAS on every transition), S1.5 hash chain +
+`audit:verify`, S1.4 adapter + R-VERIFY + kill switch + startup sweep + all 9 stub
+modes, S3.1–S3.5 UI (cards, inline edit, warnings, handoff copy, keyboard Confirm),
+S3.3 text entry, Core multi-order/options refusals. Not touched: `services/nlp`
+(eval hash unchanged), S2.x parsing, SSO, OTel, deploy.
+
 | Date | Task | Evidence |
 |---|---|---|
 | 2026-10-06 | M1.1 | `42adc55`: 276 cases; v1 baseline dev 76.2%, heldout 80.3% |

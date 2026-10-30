@@ -25,6 +25,11 @@ export const authMiddleware: RequestHandler = (req, res, next): void => {
 
   try {
     const payload = jwt.verify(token, secret) as JwtPayload;
+    // Fail closed: a valid signature without an identity is not an identity.
+    if (typeof payload.userId !== 'string' || payload.userId.trim() === '') {
+      res.status(401).json({ error: 'Token has no user identity', code: 'UNAUTHORIZED' });
+      return;
+    }
     req.userId = payload.userId;
     next();
   } catch {

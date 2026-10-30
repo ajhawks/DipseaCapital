@@ -1,33 +1,84 @@
-import type { OrderDraft, SymbolCandidate } from './order.js';
+import type { EditableFields, OrderDraft, SymbolCandidate } from './order.js';
 
 export interface ParseRequest {
   transcript: string;
   /**
-   * Iteration 2: a ticker the user explicitly chose after an AMBIGUOUS_SYMBOL
-   * clarification. When present, the NLP layer skips symbol resolution and uses this.
+   * A ticker the user explicitly chose after an AMBIGUOUS_SYMBOL clarification.
+   * When present, symbol resolution is skipped and this ticker is used.
    */
   symbolOverride?: string;
 }
 
-export interface ParseResponse {
-  draft: OrderDraft;
-}
-
-export interface ParseErrorResponse {
-  error: string;
-  code: 'MISSING_FIELDS' | 'AMBIGUOUS_SYMBOL' | 'PARSE_FAILED' | 'RATE_LIMITED';
-  missingFields?: (keyof OrderDraft)[];
-  /** Populated for AMBIGUOUS_SYMBOL when the spoken name maps to several tickers. */
+/** The order could be drafted if the trader answers a question. Nothing was guessed. */
+export interface Clarification {
+  code: 'MISSING_FIELDS' | 'AMBIGUOUS_SYMBOL' | 'LOW_CONFIDENCE';
+  message: string;
+  missingFields?: string[];
   candidates?: SymbolCandidate[];
 }
 
-export interface DraftCreateRequest {
-  draft: OrderDraft;
-  /** ISO 8601 timestamp of the explicit confirm click */
-  userConfirmedAt: string;
+/** The utterance can't become a draft in this release. */
+export interface Refusal {
+  code: 'MULTI_ORDER_UNSUPPORTED' | 'OPTIONS_UNSUPPORTED' | 'PARSE_FAILED';
+  message: string;
 }
 
-export interface DraftCreateResponse {
-  silexxTicketId: string;
-  status: 'created';
+export interface ParseResponse {
+  drafts: OrderDraft[];
+  clarifications: Clarification[];
+  refusals: Refusal[];
+}
+
+export type ApiErrorCode =
+  | 'INVALID_REQUEST'
+  | 'NOT_FOUND'
+  | 'STALE_VERSION'
+  | 'INVALID_STATE'
+  | 'VALIDATION_BLOCKED'
+  | 'WARNINGS_UNACKNOWLEDGED'
+  | 'HANDOFF_DISABLED'
+  | 'PARSER_UNAVAILABLE'
+  | 'RATE_LIMITED'
+  | 'UNAUTHORIZED'
+  | 'SERVER_ERROR';
+
+export interface ApiError {
+  error: string;
+  code: ApiErrorCode;
+  /** Present on STALE_VERSION / INVALID_STATE so the client can reload the card. */
+  draft?: OrderDraft;
+}
+
+export interface EditDraftRequest {
+  version: number;
+  changes: EditableFields;
+}
+
+export interface VersionedRequest {
+  version: number;
+}
+
+export interface AcknowledgeRequest {
+  version: number;
+  codes: string[];
+}
+
+export type ManualCheckResult = 'present_correct' | 'absent' | 'wrong';
+
+export interface ReconcileRequest {
+  /** Omit to ask the server to look the ticket up in Silexx (when supported). */
+  manualResult?: ManualCheckResult;
+}
+
+export interface DraftResponse {
+  draft: OrderDraft;
+}
+
+export interface DraftListResponse {
+  drafts: OrderDraft[];
+}
+
+export interface HandoffAvailability {
+  enabled: boolean;
+  reason?: string;
 }

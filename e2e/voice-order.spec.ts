@@ -1,10 +1,12 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect, type Page, type Route } from '@playwright/test';
 
-// ── shared fixtures ───────────────────────────────────────────────────────────
+// ── mock API ──────────────────────────────────────────────────────────────────
+// A small in-test stand-in for the server's draft lifecycle, so the UI can be
+// driven through confirm / edit / handoff without a backend.
 
-const MOCK_DRAFT = {
-  id: 'draft-e2e-001',
-  status: 'draft',
+type Json = Record<string, unknown>;
+
+const BASE_DRAFT = {
   side: 'BUY',
   quantity: 100,
   symbol: 'AAPL',
@@ -12,16 +14,66 @@ const MOCK_DRAFT = {
   orderType: 'LIMIT',
   limitPrice: 195.5,
   assetClass: 'EQUITY',
+  contentHash: 'h1',
   createdAt: '2026-01-01T00:00:00.000Z',
+  updatedAt: '2026-01-01T00:00:00.000Z',
+  issues: [],
+  acknowledgedWarnings: [],
+  handoff: { state: 'none' },
 };
 
-const PARSE_OK = { draft: MOCK_DRAFT };
-const DRAFT_OK = { silexxTicketId: 'SILEXX-E2E-001', status: 'created' };
-const PARSE_ERR = {
-  error: 'Could not extract quantity.',
-  code: 'MISSING_FIELDS',
-  missingFields: ['quantity'],
-};
+interface MockOptions {
+  parse?: Json;
+  handoff?: Json;
+  availability?: Json;
+}
+
+interface MockApi {
+  calls: string[];
+}
+
+async function mockApi(page: Page, opts: MockOptions = {}): Promise<MockApi> {
+  const api: MockApi = { calls: [] };
+  const drafts = new Map<string, Json>();
+  let seq = 0;
+
+  await page.route('**/api/**', async (route: Route) => {
+    const req = route.request();
+    const url = new URL(req.url());
+    const body = (req.postDataJSON() ?? {}) as Json;
+    const path = url.pathname;
+    api.calls.push(`${req.method()} ${path}`);
+
+    if (path === '/api/parse') {
+      if (opts.parse) return route.fulfill({ json: opts.parse });
+      seq += 1;
+      const d = { ...BASE_DRAFT, id: `d${seq}`, version: 1, state: 'awaiting_confirmation', ...(body['symbolOverride'] ? { symbol: body['symbolOverride'] } : {}) };
+      drafts.set(d.id, d);
+      return route.fulfill({ json: { drafts: [d], clarifications: [], refusals: [] } });
+    }
+    if (path === '/api/drafts' && req.method() === 'GET') return route.fulfill({ json: { drafts: [] } });
+    if (path === '/api/drafts/handoff-availability') return route.fulfill({ json: opts.availability ?? { enabled: true } });
+
+    const m = /^\/api\/drafts\/([^/]+)(?:\/(\w+))?$/.exec(path);
+    const d = m ? drafts.get(m[1] as string) : undefined;
+    if (!m || !d) return route.fulfill({ status: 404, json: { error: 'Draft not found.', code: 'NOT_FOUND' } });
+    if (body['version'] !== undefined && body['version'] !== d['version']) {
+      return route.fulfill({ status: 409, json: { error: 'stale', code: 'STALE_VERSION', draft: d } });
+    }
+    const action = m[2] ?? 'edit';
+    const v = (d['version'] as number) + 1;
+    let next: Json = d;
+    if (action === 'edit') next = { ...d, ...(body['changes'] as Json), version: v, state: 'awaiting_confirmation', confirmation: undefined, handoff: { state: 'none' } };
+    if (action === 'confirm') next = { ...d, version: v, state: 'confirmed', confirmation: { version: v, contentHash: 'h1', confirmedAt: 'now' } };
+    if (action === 'cancel') next = { ...d, state: 'cancelled' };
+    if (action === 'handoff') {
+      next = { ...d, handoff: opts.handoff ?? { state: 'populated_verified', silexxTicketId: 'STUB-0001', message: 'Populated in Silexx, fields verified. Not submitted. Review and submit in Silexx.' } };
+    }
+    drafts.set(d['id'] as string, next);
+    return route.fulfill({ json: { draft: next } });
+  });
+  return api;
+}
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
@@ -34,6 +86,8 @@ async function recordAndStop(page: Page, transcript: string): Promise<void> {
   }, transcript);
   await page.click('button[aria-label="Stop recording"]');
 }
+
+const CONFIRM = { name: 'Confirm and send draft to Silexx' };
 
 // ── per-test setup ────────────────────────────────────────────────────────────
 
@@ -86,112 +140,132 @@ test.beforeEach(async ({ page }) => {
     };
   });
 
-  await page.goto('/');
 });
 
 // ── tests ─────────────────────────────────────────────────────────────────────
 
-test('happy path: record → parse → review → confirm → draft ticket created', async ({ page }) => {
-  await page.route('**/api/parse', (route) => route.fulfill({ json: PARSE_OK }));
-  await page.route('**/api/draft', (route) => route.fulfill({ json: DRAFT_OK }));
-
+test('voice happy path: speak → draft card → confirm → populated and verified, not submitted', async ({ page }) => {
+  const api = await mockApi(page);
+  await page.goto('/');
   await recordAndStop(page, 'Buy 100 shares of AAPL at 195.50');
 
-  // ReviewPanel renders with all required elements. Exact-match locators scoped
-  // to the panel so the live transcript ("Buy 100 shares of AAPL…") never
-  // collides under strict mode.
-  await expect(page.getByText('This order has NOT been submitted to the market')).toBeVisible();
-  const review = page.getByTestId('review-panel');
-  await expect(review.getByText('BUY', { exact: true })).toBeVisible();
-  await expect(review.getByText('AAPL', { exact: true })).toBeVisible();
-  await expect(review.getByText('LIMIT', { exact: true })).toBeVisible();
+  const card = page.getByTestId('draft-card');
+  await expect(card.getByTestId('draft-badge')).toHaveText('Awaiting confirmation');
+  await expect(card.getByText('Draft order to buy 100 shares of AAPL with a limit of $195.50.')).toBeVisible();
+  await expect(card.getByText(/Nothing is submitted or executed by this app/)).toBeVisible();
 
-  // Confirm button is enabled once the full draft is visible
-  const confirmBtn = page.getByRole('button', { name: 'Confirm Draft' });
-  await expect(confirmBtn).toBeEnabled();
-  await confirmBtn.click();
-
-  // Success screen confirms draft was sent to Silexx (not submitted to market)
-  await expect(page.getByText('Draft ticket created in Silexx')).toBeVisible();
-  await expect(page.getByText('Open Silexx to review the draft and submit when ready.')).toBeVisible();
-  await expect(page.getByText(`Ticket ${DRAFT_OK.silexxTicketId}`)).toBeVisible();
+  await card.getByRole('button', CONFIRM).click();
+  await expect(card.getByTestId('draft-badge')).toHaveText('Populated, verified');
+  await expect(card.getByText(/fields verified\. Not submitted/)).toBeVisible();
+  expect(api.calls).toContain('POST /api/drafts/d1/confirm');
+  expect(api.calls).toContain('POST /api/drafts/d1/handoff');
 });
 
-test('graceful failure: parse error → error shown → re-record available', async ({ page }) => {
-  await page.route('**/api/parse', (route) =>
-    route.fulfill({ status: 422, json: PARSE_ERR }),
-  );
-
-  await recordAndStop(page, 'shares of something unclear');
-
-  // Error panel
-  await expect(page.getByText('Could not parse order')).toBeVisible();
-  await expect(page.getByText('Could not extract quantity.')).toBeVisible();
-  await expect(page.getByText('Missing: quantity')).toBeVisible();
-
-  // Re-record prompt from VoiceOrderPanel
-  await expect(
-    page.getByText('Record again with a different phrase to retry.'),
-  ).toBeVisible();
-
-  // Record button re-enabled for retry (isLoading is false after failure)
-  await expect(page.getByRole('button', { name: 'Start recording' })).toBeEnabled();
+test('manual text entry drafts an order with no microphone', async ({ page }) => {
+  await mockApi(page);
+  await page.goto('/');
+  await page.getByLabel('Order text').fill('buy 100 AAPL at 195.50');
+  await page.getByRole('button', { name: 'Draft it' }).click();
+  await expect(page.getByTestId('draft-badge')).toHaveText('Awaiting confirmation');
 });
 
-test('ReviewPanel gate: confirm button absent before draft, enabled only after draft loads', async ({ page }) => {
-  // Gate 1: no recording yet → confirm button does not exist
-  await expect(page.getByRole('button', { name: 'Confirm Draft' })).not.toBeVisible();
-
-  // Introduce a 200 ms delay so we can assert the loading state.
+test('clarification: ambiguous symbol → trader picks → drafted with that symbol', async ({ page }) => {
+  let parses = 0;
+  await mockApi(page);
   await page.route('**/api/parse', async (route) => {
-    await new Promise<void>((resolve) => setTimeout(resolve, 200));
-    await route.fulfill({ json: PARSE_OK });
+    parses += 1;
+    if (parses === 1) {
+      return route.fulfill({
+        json: {
+          drafts: [],
+          refusals: [],
+          clarifications: [{ code: 'AMBIGUOUS_SYMBOL', message: '"Alphabet" matches more than one ticker.', candidates: [{ symbol: 'GOOGL', name: 'Class A' }, { symbol: 'GOOG', name: 'Class C' }] }],
+        },
+      });
+    }
+    return route.fallback();
   });
-
-  await page.click('button[aria-label="Start recording"]');
-  await page.evaluate((text: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).__setSpeechTranscript(text);
-  }, 'Buy 100 shares of AAPL at 195.50');
-  await page.click('button[aria-label="Stop recording"]');
-
-  // Gate 2: while parse is in-flight (draft still null), confirm button is absent
-  await expect(page.getByRole('button', { name: 'Confirm Draft' })).not.toBeVisible();
-
-  // Gate 3: once parse resolves and draft is set, confirm button appears and is enabled
-  await expect(page.getByRole('button', { name: 'Confirm Draft' })).toBeEnabled({
-    timeout: 5_000,
-  });
-
-  // Structural gate: button cannot be reached via Tab or triggered by Enter from
-  // another field (tabIndex=-1, type="button", explicit onKeyDown guard).
-  const confirmBtn = page.getByRole('button', { name: 'Confirm Draft' });
-  await expect(confirmBtn).toHaveAttribute('tabindex', '-1');
-  await expect(confirmBtn).toHaveAttribute('type', 'button');
+  await page.goto('/');
+  await page.getByLabel('Order text').fill('buy 10 Alphabet at market');
+  await page.getByRole('button', { name: 'Draft it' }).click();
+  await expect(page.getByTestId('clarification')).toContainText('matches more than one ticker');
+  await expect(page.getByTestId('draft-card')).toHaveCount(0);
+  await page.getByRole('button', { name: /GOOGL/ }).click();
+  await expect(page.getByTestId('draft-card')).toContainText('GOOGL');
 });
 
-test('cancel path: record → parse → cancel → no /api/draft call made', async ({ page }) => {
-  await page.route('**/api/parse', (route) => route.fulfill({ json: PARSE_OK }));
-
-  let draftCalled = false;
-  await page.route('**/api/draft', (route) => {
-    draftCalled = true;
-    return route.fulfill({ json: DRAFT_OK });
+test('refusal: several orders in one utterance → nothing drafted, reason shown', async ({ page }) => {
+  await mockApi(page, {
+    parse: { drafts: [], clarifications: [], refusals: [{ code: 'MULTI_ORDER_UNSUPPORTED', message: 'This sounds like more than one order (heard: buy, sell). Enter one order at a time. Nothing was drafted.' }] },
   });
+  await page.goto('/');
+  await recordAndStop(page, 'buy 100 AAPL and sell 50 MSFT');
+  await expect(page.getByTestId('refusal')).toContainText('more than one order');
+  await expect(page.getByTestId('draft-card')).toHaveCount(0);
+});
 
+test('edit after confirm → card returns to Awaiting confirmation', async ({ page }) => {
+  await mockApi(page, { availability: { enabled: false, reason: 'Silexx is not configured on this server.' } });
+  await page.goto('/');
+  await page.getByLabel('Order text').fill('buy 100 AAPL at 195.50');
+  await page.getByRole('button', { name: 'Draft it' }).click();
+  const card = page.getByTestId('draft-card');
+  await card.getByRole('button', CONFIRM).click();
+  await expect(card.getByTestId('draft-badge')).toHaveText('Confirmed · handoff disabled');
+
+  await card.getByRole('button', { name: 'Edit' }).click();
+  await card.getByLabel('Quantity').fill('250');
+  await card.getByRole('button', { name: 'Save changes' }).click();
+  await expect(card.getByTestId('draft-badge')).toHaveText('Awaiting confirmation');
+  await expect(card.getByText(/buy 250 shares/)).toBeVisible();
+});
+
+test('uncertain handoff: says check Silexx, offers reconciliation, no blind retry', async ({ page }) => {
+  await mockApi(page, { handoff: { state: 'uncertain', message: 'Silexx did not respond in time. Outcome unknown: check Silexx manually before doing anything else with this order.' } });
+  await page.goto('/');
+  await page.getByLabel('Order text').fill('buy 100 AAPL at 195.50');
+  await page.getByRole('button', { name: 'Draft it' }).click();
+  const card = page.getByTestId('draft-card');
+  await card.getByRole('button', CONFIRM).click();
+  await expect(card.getByTestId('draft-badge')).toHaveText('Outcome uncertain: check Silexx');
+  await expect(card.getByRole('button', { name: 'Checked: not in Silexx' })).toBeVisible();
+  await expect(card.getByRole('button', { name: /Try handoff again|Send draft to Silexx/ })).toHaveCount(0);
+  await expect(card.getByRole('button', { name: 'Edit' })).toHaveCount(0);
+});
+
+test('keyboard-only: Confirm is reachable by Tab, not auto-focused, and Enter in the text box never confirms', async ({ page }) => {
+  const api = await mockApi(page);
+  await page.goto('/');
+  const box = page.getByLabel('Order text');
+  await box.fill('buy 100 AAPL at 195.50');
+  await box.press('Enter');
+  const confirm = page.getByRole('button', CONFIRM);
+  await expect(confirm).toBeEnabled();
+  await expect(confirm).not.toBeFocused();
+
+  // Enter in the text field submits another parse at most; it never confirms.
+  await box.fill('buy 5 MSFT at market');
+  await box.press('Enter');
+  await expect(page.getByTestId('draft-card')).toHaveCount(2);
+  expect(api.calls.some((c) => c.endsWith('/confirm'))).toBe(false);
+
+  // Tab until the first card's Confirm has focus, then activate it with the keyboard.
+  const first = page.getByTestId('draft-card').first().getByRole('button', CONFIRM);
+  for (let i = 0; i < 25 && !(await first.evaluate((el) => el === document.activeElement)); i++) {
+    await page.keyboard.press('Tab');
+  }
+  await expect(first).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(page.getByTestId('draft-badge').first()).toHaveText('Populated, verified');
+  // The second draft is untouched: confirmation is per draft.
+  await expect(page.getByTestId('draft-badge').nth(1)).toHaveText('Awaiting confirmation');
+});
+
+test('cancel: the draft disappears and nothing is handed off', async ({ page }) => {
+  const api = await mockApi(page);
+  await page.goto('/');
   await recordAndStop(page, 'Buy 100 shares of AAPL at 195.50');
-
-  // Wait for ReviewPanel so we know the parse resolved
-  await expect(page.getByText('This order has NOT been submitted to the market')).toBeVisible();
-
-  // Cancel the draft
-  await page.getByRole('button', { name: 'Cancel' }).click();
-
-  // ReviewPanel dismissed — draft cleared from state
-  await expect(
-    page.getByText('This order has NOT been submitted to the market'),
-  ).not.toBeVisible();
-
-  // /api/draft was never called
-  expect(draftCalled).toBe(false);
+  await page.getByRole('button', { name: 'Cancel draft' }).click();
+  await expect(page.getByTestId('draft-card')).toHaveCount(0);
+  expect(api.calls.some((c) => c.endsWith('/handoff'))).toBe(false);
 });

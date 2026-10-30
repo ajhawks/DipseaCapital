@@ -11,7 +11,9 @@
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "eval": "tsx eval/run.mts",
-    "eval:generate": "tsx eval/generate.mts"
+    "eval:generate": "tsx eval/generate.mts",
+    "audit:verify": "tsx scripts/audit-verify.mts",
+    "silexx:stub": "node scripts/silexx-stub.mjs"
   },
   "dependencies": {
     "@silexx/shared": "*",
@@ -32,16 +34,26 @@
   },
   "jest": {
     "preset": "ts-jest/presets/default-esm",
-    "extensionsToTreatAsEsm": [".ts"],
+    "extensionsToTreatAsEsm": [
+      ".ts"
+    ],
     "moduleNameMapper": {
       "^@silexx/shared$": "<rootDir>/../shared/index.ts",
       "^@silexx/shared/(.*)$": "<rootDir>/../shared/$1",
       "^(\\.{1,2}/.*)\\.js$": "$1"
     },
     "transform": {
-      "^.+\\.ts$": ["ts-jest", { "useESM": true, "tsconfig": "tsconfig.test.json" }]
+      "^.+\\.ts$": [
+        "ts-jest",
+        {
+          "useESM": true,
+          "tsconfig": "tsconfig.test.json"
+        }
+      ]
     },
     "testEnvironment": "node",
-    "roots": ["<rootDir>/tests"]
+    "roots": [
+      "<rootDir>/tests"
+    ]
   }
 }

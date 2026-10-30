@@ -1,5 +1,5 @@
 import rateLimit from 'express-rate-limit';
-import type { ParseErrorResponse } from '@silexx/shared';
+import type { ApiError } from '@silexx/shared';
 
 function makeRateLimitHandler(windowMs: number, max: number) {
   return rateLimit({
@@ -8,7 +8,7 @@ function makeRateLimitHandler(windowMs: number, max: number) {
     // Key per authenticated user; falls back to IP if userId not yet set (should not happen).
     keyGenerator: (req) => req.userId ?? req.ip ?? 'unknown',
     handler: (_req, res) => {
-      const body: ParseErrorResponse = {
+      const body: ApiError = {
         error: 'Too many requests. Please try again later.',
         code: 'RATE_LIMITED',
       };

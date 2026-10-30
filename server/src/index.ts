@@ -6,7 +6,8 @@ import { errorHandler } from './middleware/errorHandler.js';
 import { requestLogger } from './middleware/requestLogger.js';
 import healthRouter from './routes/health.js';
 import parseRouter from './routes/parse.js';
-import draftRouter from './routes/draft.js';
+import draftsRouter from './routes/drafts.js';
+import { sweepInProgress } from './services/handoff/handoffService.js';
 
 const app = express();
 const PORT = process.env['PORT'] ? parseInt(process.env['PORT'], 10) : 3001;
@@ -15,13 +16,20 @@ const PORT = process.env['PORT'] ? parseInt(process.env['PORT'], 10) : 3001;
 app.use(express.json());
 app.use(requestLogger);
 
-// Routes — health is public; parse and draft require auth
+// Routes — health is public; everything else requires auth
 app.use('/api/health', healthRouter);
 app.use('/api/parse', authMiddleware, parseRouter);
-app.use('/api/draft', authMiddleware, draftRouter);
+app.use('/api/drafts', authMiddleware, draftsRouter);
 
 // Error handler must be registered last
 app.use(errorHandler);
+
+// Anything a crash left mid-handoff becomes `uncertain` before we serve traffic. Never re-sent.
+const swept = await sweepInProgress();
+if (swept > 0) {
+  // eslint-disable-next-line no-console
+  console.log(JSON.stringify({ event: 'handoff_sweep', movedToUncertain: swept }));
+}
 
 const server = app.listen(PORT, () => {
   // eslint-disable-next-line no-console
