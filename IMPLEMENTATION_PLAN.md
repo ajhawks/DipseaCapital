@@ -262,10 +262,14 @@ working rules and baselines moved into this file. ADRs kept.
 *Accept:* `DESIGN_DOC.md` + `IMPLEMENTATION_PLAN.md` are the only planning docs at
 the root; no doc recommends hosted LLM/STT.
 
-**S0.2 ⬜ [Core] CI** (was M1.7). GitHub Actions: lint, `npm run build` (the client
+**S0.2 🔄 [Core] CI** (was M1.7). GitHub Actions: lint, `npm run build` (the client
 `typecheck` script checks nothing), server Jest, Playwright e2e, plus a Postgres
 service container once S1.5 lands.
-*Groundwork:* all four commands pass locally today.
+*Done so far:* `.github/workflows/ci.yml`. The root `build` script now builds
+`shared` first: from a clean checkout the old workspace order built `server`
+against a `shared/dist` that didn't exist yet, and local runs only passed thanks
+to a stale `dist`. Verified on a clean clone: lint, build, 62/62 Jest, 4/4 e2e
+pass; a planted client type error fails `build` (exit 2).
 *Accept:* workflow green on main; a type error in `client/` fails it.
 
 ### Phase 1: Safety core (server-authoritative drafts and handoff)
@@ -558,7 +562,7 @@ their acceptance criteria are met:
 | Check | Result | Tasks affected |
 |---|---|---|
 | Planning docs | `DESIGN_DOC.md` + `IMPLEMENTATION_PLAN.md` at root; obsolete docs deleted | S0.1 ✅ |
-| `.github/workflows/` | Absent | S0.2 ⬜ |
+| `.github/workflows/` | Absent (added 2026-10-30, not yet run on GitHub) | S0.2 🔄 |
 | `npm test` (server) | 62/62 pass: regex parser, NLP (mocked), symbols, audit, Silexx client | Groundwork only |
 | `npx playwright test` | 4/4 pass with mocked API (happy, parse error, gate, cancel) | Groundwork only |
 | `STOP_LIMIT`, `version` in `shared/types/order.ts` | Absent; `SubmittedOrder` still present | S1.1 ⬜ |

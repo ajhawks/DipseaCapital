@@ -10,7 +10,7 @@
   "scripts": {
     "dev:client": "npm run dev --workspace=client",
     "dev:server": "npm run dev --workspace=server",
-    "build": "npm run build --workspaces",
+    "build": "npm run build --workspace=shared && npm run build --workspace=client --workspace=server",
     "lint": "npm run lint --workspaces --if-present",
     "format": "prettier --write \"**/*.{ts,tsx,js,json}\" --ignore-path .gitignore",
     "typecheck": "npm run typecheck --workspaces",
